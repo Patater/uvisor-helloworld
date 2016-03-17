@@ -110,6 +110,12 @@ bool challenge_verify(const uint8_t *secret, int len)
 
 UVISOR_EXTERN void __challenge_init(void)
 {
+    /* Don't reinitialize the challenge if the challenge has already been
+     * initialized. */
+    if (uvisor_ctx->initialized) {
+        return;
+    }
+
     /* the address of the context is stored and exposed, only for testing
      * purposes; uvisor protection ensures that accesses to this memory location
      * outside the box secure context will fail */
